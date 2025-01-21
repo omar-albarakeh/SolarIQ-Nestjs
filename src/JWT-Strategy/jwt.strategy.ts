@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../User/User.schema';
+import { User } from '../User/user.schema';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,20 +18,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
     });
   }
+
   async validate(payload: { id: string }) {
     const user = await this.userModel.findById(payload.id).exec();
-
     if (!user) {
       throw new UnauthorizedException(
         'Unauthorized: Please log in to access this endpoint.',
       );
     }
+
     if (user.blocked) {
       throw new UnauthorizedException(
         'Unauthorized: Your account has been blocked.',
       );
     }
-
     return user;
   }
 }
