@@ -20,7 +20,12 @@ export class UserService {
     return bcrypt.hash(password, 10);
   }
 
-
+  private generateToken(payload: { id: string; email: string; name: string; type: string }): string {
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1h',
+    });
+  }
 
  
 }
