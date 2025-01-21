@@ -17,5 +17,19 @@ import { LoginDto } from './dto/login.dto'
 export class AuthController {
   constructor(private readonly authService: UserService) {}
 
-  
+  @Post('/signup')
+  async signUp(
+    @Body() signUpDto: SignUpDto,
+  ): Promise<{ status: string; message: string; data: { token: string } }> {
+    try {
+      const token = await this.authService.signUp(signUpDto);
+      return {
+        status: 'success',
+        message: 'User successfully registered.',
+        data: { token },
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Error during sign up', error.message);
+    }
+  }
 }
