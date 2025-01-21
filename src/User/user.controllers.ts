@@ -14,15 +14,15 @@ import { UserService } from './user.services';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto'
 @Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: UserService) {}
+export class UserController {
+  constructor(private readonly UserService: UserService) {}
 
   @Post('/signup')
   async signUp(
     @Body() signUpDto: SignUpDto,
   ): Promise<{ status: string; message: string; data: { token: string } }> {
     try {
-      const token = await this.authService.signUp(signUpDto);
+      const token = await this.UserService.signUp(signUpDto);
       return {
         status: 'success',
         message: 'User successfully registered.',
@@ -44,7 +44,7 @@ export class AuthController {
     data: { accessToken: string };
   }> {
     try {
-      const { accessToken, refreshToken } = await this.authService.login(loginDto);
+      const { accessToken, refreshToken } = await this.UserService.login(loginDto);
 
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
