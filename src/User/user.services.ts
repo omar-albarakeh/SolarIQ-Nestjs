@@ -84,5 +84,16 @@ export class AuthService {
     if (!user || !(await this.verifyPassword(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials.');
     }
+
+    const accessToken = this.generateToken({
+      id: user.id.toString(),
+      email: user.email,
+      name: user.name,
+      type: user.type,
+    });
+
+    const refreshToken = this.generateRefreshToken({ id: user.id.toString() });
+
+    return { accessToken, refreshToken, isSolarInfoComplete: user.isSolarInfoComplete };
   }
 }
