@@ -40,7 +40,7 @@ export class UserService {
 
   private createUserPayload(user: any): { id: string; email: string; name: string; type: string; phone: string; address: string } {
     return {
-      id: user.id.toString(),
+      id: user._id.toString(),
       email: user.email,
       name: user.name,
       type: user.type,

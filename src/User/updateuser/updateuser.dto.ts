@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEmail, IsString, MinLength, Matches, IsEnum } from 'class-validator';
-import { UserType } from '../user_type.enum';
+import { UserType } from '../Auth/user_type.enum';
 
 export class SignUpDto {
   @IsNotEmpty({ message: 'Name is required' })

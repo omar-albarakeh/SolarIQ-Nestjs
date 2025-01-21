@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserModule } from './User/user.module';
+import { UserModule } from './User/Auth/user.module';
 import { envValidationSchema } from './JWT-Strategy/env.validation';
 
 @Module({
