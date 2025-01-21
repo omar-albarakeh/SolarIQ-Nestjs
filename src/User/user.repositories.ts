@@ -20,6 +20,10 @@ export class UserRepository {
     return await this.userModel.findById(id).exec();
   }
 
+  async findUserByName(name: string): Promise<User | null> {
+    return await this.userModel.findOne({ name }).exec();
+  }
+
   async isEmailTaken(email: string): Promise<boolean> {
     const user = await this.userModel.findOne({ email }).exec();
     return !!user;
