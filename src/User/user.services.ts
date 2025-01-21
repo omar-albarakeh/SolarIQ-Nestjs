@@ -8,6 +8,7 @@ import { UserRepository } from './user.repositories';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
+import {LoginDto} from "./dto/login.dto"
 
 @Injectable()
 export class AuthService {
@@ -64,4 +65,14 @@ export class AuthService {
     });
   }
 
+  
+  private async verifyPassword(
+    plainPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+
+   
 }
