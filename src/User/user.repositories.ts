@@ -12,4 +12,9 @@ export class UserRepository {
     return await user.save();
   }
 
+  
+  async isEmailTaken(email: string): Promise<boolean> {
+    const user = await this.userModel.findOne({ email }).exec();
+    return !!user;
+  }
 }

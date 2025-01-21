@@ -27,6 +27,7 @@
     "@nestjs/mongoose": "^11.0.0",
     "@nestjs/passport": "^11.0.4",
     "@nestjs/platform-express": "^11.0.1",
+    "bcryptjs": "^2.4.3",
     "class-validator": "^0.14.1",
     "joi": "^17.13.3",
     "mongodb": "^6.12.0",
