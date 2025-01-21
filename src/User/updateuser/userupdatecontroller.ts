@@ -13,11 +13,11 @@ import { UpdateUserProfileDto } from './updateuser.dto';
 import { User } from '../Auth/user.schema';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('users')
+@Controller('User')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Put('profile/:id')
+  @Put('updateprofile/:id')
   @UseGuards(AuthGuard('jwt'))
   async updateUserProfile(
     @Param('id') userId: string,
