@@ -32,4 +32,34 @@ export class AuthController {
       throw new InternalServerErrorException('Error during sign up', error.message);
     }
   }
+
+  @Post('/login')
+  @HttpCode(HttpStatus.OK)
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<{
+    status: string;
+    message: string;
+    data: { accessToken: string };
+  }> {
+    try {
+      const { accessToken, refreshToken } = await this.authService.login(loginDto);
+
+      res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      return {
+        status: 'success',
+        message: 'Login successful.',
+        data: { accessToken },
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid login credentials.', error.message);
+    }
+  }
 }
