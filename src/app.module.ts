@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './User/Auth/user.module';
 import { envValidationSchema } from './JWT-Strategy/env.validation';
+import {UpdateUserModule} from "./User/updateuser/updateusermodule"
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { envValidationSchema } from './JWT-Strategy/env.validation';
       retryDelay: 1000, 
     }),
     UserModule,
+    UpdateUserModule,
     
   ],
 })
