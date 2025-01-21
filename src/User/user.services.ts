@@ -72,7 +72,17 @@ export class AuthService {
   ): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
   }
+  
 
+   async login(
+    loginDto: LoginDto,
+  ): Promise<{ accessToken: string; refreshToken: string; isSolarInfoComplete: boolean }> {
+    const { email, password } = loginDto;
 
-   
+    const user = await this.userRepository.findUserByEmail(email);
+
+    if (!user || !(await this.verifyPassword(password, user.password))) {
+      throw new UnauthorizedException('Invalid credentials.');
+    }
+  }
 }
