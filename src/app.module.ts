@@ -21,6 +21,7 @@ import { envValidationSchema } from './JWT-Strategy/env.validation';
       retryDelay: 1000, 
     }),
     UserModule,
+    
   ],
 })
 export class AppModule {}

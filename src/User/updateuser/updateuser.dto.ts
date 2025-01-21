@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsEmail, IsString, MinLength, Matches, IsEnum } from 'class-validator';
+import { IsOptional, IsString, MinLength, Matches, IsEnum } from 'class-validator';
 import { UserType } from '../Auth/user_type.enum';
 
-export class SignUpDto {
-  @IsNotEmpty({ message: 'Name is required' })
+export class UpdateUserProfileDto {
+  @IsOptional()
   @IsString({ message: 'Name must be a string' })
   readonly name?: string;
 
-  @IsNotEmpty({ message: 'Email is required' })
-  @IsEmail({}, { message: 'Invalid email address' })
+  @IsOptional()
+  @IsString({ message: 'Email must be a string' })
   readonly email?: string;
 
-  @IsNotEmpty({ message: 'Password is required' })
+  @IsOptional()
   @IsString({ message: 'Password must be a string' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/, {
@@ -19,15 +19,15 @@ export class SignUpDto {
   })
   readonly password?: string;
 
-  @IsNotEmpty({ message: 'User type is required' })
+  @IsOptional()
   @IsEnum(UserType, { message: 'Invalid user type. Valid options are: Admin, Engineer, User' })
   readonly type?: UserType;
 
-  @IsNotEmpty({ message: 'Phone is required' })
+  @IsOptional()
   @Matches(/^\d{8}$/, { message: 'Phone must be a valid 8-digit number' })
   readonly phone?: string;
 
-  @IsNotEmpty({ message: 'Address is required' })
+  @IsOptional()
   @IsString({ message: 'Address must be a string' })
   readonly address?: string;
 }
