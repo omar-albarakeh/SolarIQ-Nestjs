@@ -2,13 +2,12 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repositories';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
-import {LoginDto} from "./dto/login.dto"
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,11 +20,33 @@ export class AuthService {
     return bcrypt.hash(password, 10);
   }
 
-  private generateToken(payload: { id: string; email: string; name: string; type: string }): string {
+  private generateToken(payload: { id: string; email: string; name: string; type: string; phone: string; address: string }): string {
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
       expiresIn: '1h',
     });
+  }
+
+  private generateRefreshToken(payload: { id: string }): string {
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: '7d',
+    });
+  }
+
+  private async verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
+    return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+  private createUserPayload(user: any): { id: string; email: string; name: string; type: string; phone: string; address: string } {
+    return {
+      id: user.id.toString(),
+      email: user.email,
+      name: user.name,
+      type: user.type,
+      phone: user.phone,
+      address: user.address,
+    };
   }
 
   async signUp(signUpDto: SignUpDto): Promise<string> {
@@ -36,7 +57,6 @@ export class AuthService {
     }
 
     const hashedPassword = await this.hashPassword(password);
-
     const user = await this.userRepository.createUser({
       name,
       email,
@@ -46,54 +66,21 @@ export class AuthService {
       address,
     });
 
-    const tokenPayload = {
-      id: user.id.toString(),
-      email: user.email,
-      name: user.name,
-      type: user.type,
-      phone: user.phone,
-      address: user.address,
-    };
-
+    const tokenPayload = this.createUserPayload(user);
     return this.generateToken(tokenPayload);
-}
-
-  private generateRefreshToken(payload: { id: string }): string {
-    return this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: '7d',
-    });
   }
 
-  
-  private async verifyPassword(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    return bcrypt.compare(plainPassword, hashedPassword);
-  }
-  
-
-   async login(
-    loginDto: LoginDto,
-  ): Promise<{ accessToken: string; refreshToken: string; isSolarInfoComplete: boolean }> {
+  async login(loginDto: LoginDto): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = loginDto;
-
     const user = await this.userRepository.findUserByEmail(email);
 
     if (!user || !(await this.verifyPassword(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const accessToken = this.generateToken({
-      id: user.id.toString(),
-      email: user.email,
-      name: user.name,
-      type: user.type,
-    });
-
+    const accessToken = this.generateToken(this.createUserPayload(user));
     const refreshToken = this.generateRefreshToken({ id: user.id.toString() });
 
-    return { accessToken, refreshToken, isSolarInfoComplete: user.isSolarInfoComplete };
+    return { accessToken, refreshToken };
   }
 }
