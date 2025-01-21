@@ -6,7 +6,7 @@ export class LoginDto {
   readonly email: string;
 
   @IsNotEmpty({ message: 'Password is required' })
-  @IsString()
+  @IsString({ message: 'Password must be a string' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/, {
     message:
