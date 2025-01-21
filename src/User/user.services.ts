@@ -44,6 +44,17 @@ export class AuthService {
       phone,
       address,
     });
+
+    const tokenPayload = {
+      id: user.id.toString(),
+      email: user.email,
+      name: user.name,
+      type: user.type,
+      phone: user.phone,
+      address: user.address,
+    };
+
+    return this.generateToken(tokenPayload);
 }
 
 }
