@@ -18,7 +18,9 @@ export class Cart extends Document {
     default: [],
   })
   items: { item: Item; quantity: number }[];
-  
+
+  @Prop({ default: 0 })
+  totalPrice: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
