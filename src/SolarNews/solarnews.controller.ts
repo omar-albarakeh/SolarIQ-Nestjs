@@ -28,5 +28,17 @@ export class SolarNewsController {
     return this.solarNewsService.findAll();
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    const solarNews = await this.solarNewsService.findOne(id);
+    if (!solarNews) {
+      throw new NotFoundException(`Solar News with ID ${id} not found`);
+    }
+    return solarNews;
+  }
+
 
 }
