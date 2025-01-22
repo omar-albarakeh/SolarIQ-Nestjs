@@ -18,6 +18,15 @@ export class ItemRepository {
     @InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
   ) {}
 
- 
+  async create(createItemDto: CreateItemDto): Promise<Item> {
+    try {
+      const createdItem = new this.itemModel(createItemDto);
+      return await createdItem.save();
+    } catch (error) {
+      this.logger.error(`Failed to create item: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to create item');
+    }
+  }
+
  
 }
