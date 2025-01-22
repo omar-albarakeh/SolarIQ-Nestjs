@@ -1,17 +1,15 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { User } from '../../User/Auth/user.schema';
+import { Comment } from './Comment.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class CommunityPost extends Document {
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   author: User;
 
   @Prop({ required: true })
   text: string;
-
-  @Prop({ default: Date.now })
-  createdAt: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   likes: User[];

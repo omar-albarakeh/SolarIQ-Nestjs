@@ -3,19 +3,16 @@ import { Document, Types } from 'mongoose';
 import { User } from '../../User/Auth/user.schema';
 import { CommunityPost } from '../../Community/Schema/CommunityPost.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Comment extends Document {
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   author: User;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'CommunityPost' })
+  @Prop({ type: Types.ObjectId, ref: 'CommunityPost', required: true })
   post: CommunityPost;
 
-  @Prop({ required: true, minlength: 1, maxlength: 500 })
+  @Prop({ required: true })
   text: string;
-
-  @Prop({ default: () => new Date() })
-  createdAt: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   likes: User[];
