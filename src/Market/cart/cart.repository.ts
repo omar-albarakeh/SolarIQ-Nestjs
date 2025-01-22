@@ -128,5 +128,18 @@ export class CartRepository {
     }
   }
 
- 
+  async clearCart(userId: string): Promise<CartDocument> {
+    try {
+      const cart = await this.cartModel.findOne({ user: userId }).exec();
+      if (!cart) {
+        throw new NotFoundException('Cart not found');
+      }
+      cart.items = [];
+      cart.totalPrice = 0;
+      return await cart.save();
+    } catch (error) {
+      this.logger.error(`Failed to clear cart: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to clear cart');
+    }
+  }
 }
