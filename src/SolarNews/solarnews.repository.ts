@@ -20,7 +20,9 @@ export class SolarNewsRepository {
     return this.solarNewsModel.find().exec();
   }
 
- 
+  async findOne(id: string): Promise<SolarNews | null> {
+    return this.solarNewsModel.findById(id).exec();
+  }
 
 
  
