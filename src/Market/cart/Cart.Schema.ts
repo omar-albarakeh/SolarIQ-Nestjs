@@ -8,16 +8,16 @@ export class Cart extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true, unique: true })
   user: User;
 
-  @Prop({
-    type: [
-      {
-        item: { type: Types.ObjectId, ref: 'Item' },
-        quantity: { type: Number, default: 1 },
-      },
-    ],
-    default: [],
-  })
-  items: { item: Item; quantity: number }[];
+ @Prop({
+  type: [
+    {
+      item: { type: Types.ObjectId, ref: 'Item' },
+      quantity: { type: Number, default: 1 },
+    },
+  ],
+  default: [],
+})
+items: { item: Types.ObjectId; quantity: number }[];
 
   @Prop({ default: 0 })
   totalPrice: number;
