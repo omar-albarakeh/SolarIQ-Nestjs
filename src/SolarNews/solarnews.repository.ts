@@ -11,4 +11,13 @@ export class SolarNewsRepository {
     @InjectModel(SolarNews.name) private readonly solarNewsModel: Model<SolarNews>,
   ) {}
 
+  async create(createSolarNewsDto: CreateSolarNewsDto): Promise<SolarNews> {
+    const createdSolarNews = new this.solarNewsModel(createSolarNewsDto);
+    return createdSolarNews.save();
+  }
+
+ 
+
+
+ 
 }
