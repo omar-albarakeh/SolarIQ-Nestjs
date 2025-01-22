@@ -24,4 +24,10 @@ export class ChatController {
     return this.chatService.getMessagesByRoomId(roomId);
   }
 
+  @Get('rooms/:roomId')
+  async getChatRoomById(@Param('roomId') roomId: string) {
+    return this.chatService.getChatRoomById(roomId);
+  }
+
+ 
 }
