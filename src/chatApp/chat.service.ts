@@ -39,5 +39,7 @@ export class ChatService {
     return this.chatRoomRepository.addParticipant(roomId, userId);
   }
 
-  
+  async getAllChatRooms() {
+    return this.chatRoomRepository.findAll();
+  }
 }
