@@ -10,5 +10,14 @@ export class ChatController {
     return this.chatService.createChatRoom(name, participants);
   }
 
+  @Post('messages')
+  async addMessage(
+    @Body('senderId') senderId: string,
+    @Body('roomId') roomId: string,
+    @Body('content') content: string,
+  ) {
+    return this.chatService.addMessage(senderId, roomId, content);
+  }
+
 
 }
