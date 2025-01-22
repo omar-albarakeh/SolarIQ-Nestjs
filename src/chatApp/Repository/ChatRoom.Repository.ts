@@ -23,5 +23,7 @@ export class ChatRoomRepository {
       { new: true },
     );
   }
-
+ async findAll() {
+    return this.chatRoomModel.find().populate('participants').exec();
+  }
 }
