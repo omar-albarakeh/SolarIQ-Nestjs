@@ -24,6 +24,11 @@ export class SolarNewsRepository {
     return this.solarNewsModel.findById(id).exec();
   }
 
+  async update(id: string, updateSolarNewsDto: UpdateSolarNewsDto): Promise<SolarNews | null> {
+    return this.solarNewsModel
+      .findByIdAndUpdate(id, updateSolarNewsDto, { new: true })
+      .exec();
+  }
 
  
 }
