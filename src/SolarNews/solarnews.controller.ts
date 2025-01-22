@@ -18,5 +18,10 @@ import { isValidObjectId } from 'mongoose';
 export class SolarNewsController {
   constructor(private readonly solarNewsService: SolarNewsService) {}
 
+  @Post()
+  async create(@Body() createSolarNewsDto: CreateSolarNewsDto) {
+    return this.solarNewsService.create(createSolarNewsDto);
+  }
+
 
 }
