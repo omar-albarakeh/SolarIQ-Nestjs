@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-
 @Schema({ timestamps: true })
 export class Item extends Document {
   @Prop({ type: String, required: true })
@@ -30,3 +29,4 @@ export class Item extends Document {
 }
 
 export const ItemSchema = SchemaFactory.createForClass(Item);
+export type ItemDocument = Item & Document;

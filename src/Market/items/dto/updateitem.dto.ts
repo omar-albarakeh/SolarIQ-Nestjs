@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsOptional, IsUrl, Min, Max, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsUrl, Min, IsNotEmpty } from 'class-validator';
 
 export class UpdateItemDto {
   @IsString({ message: 'Name must be a string' })
