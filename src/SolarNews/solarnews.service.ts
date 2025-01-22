@@ -19,6 +19,9 @@ export class SolarNewsService {
     return this.solarNewsRepository.findOne(id);
   }
 
+  async update(id: string, updateSolarNewsDto: UpdateSolarNewsDto) {
+    return this.solarNewsRepository.update(id, updateSolarNewsDto);
+  }
 
 
 }
