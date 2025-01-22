@@ -19,6 +19,10 @@ export class ChatService {
     return this.messageRepository.create(senderId, roomId, content);
   }
 
+  async getMessagesByRoomId(roomId: string) {
+    return this.messageRepository.findByRoomId(roomId);
+  }
+
  
   
   
