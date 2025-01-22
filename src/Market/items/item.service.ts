@@ -67,5 +67,19 @@ export class ItemService {
     }
   }
 
- 
+  async deleteItem(id: string): Promise<Item> {
+    try {
+      const deletedItem = await this.itemRepository.delete(id);
+      if (!deletedItem) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      return deletedItem;
+    } catch (error) {
+      this.logger.error(`Failed to delete item: ${error.message}`, error.stack);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to delete item');
+    }
+  }
 }
