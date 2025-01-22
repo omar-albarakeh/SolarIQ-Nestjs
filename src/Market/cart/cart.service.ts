@@ -14,7 +14,10 @@ export class CartService {
     return await this.cartRepository.addToCart(userId, itemId, quantity);
   }
 
-  
+  async removeFromCart(userId: string, itemId: string): Promise<CartDocument> {
+    return await this.cartRepository.removeFromCart(userId, itemId);
+  }
+
 
 
  
