@@ -29,7 +29,7 @@ export interface AuthenticatedRequest extends Request {
 export class CommunityPostController {
   constructor(private readonly postService: CommunityPostService) {}
 
-  @Post()
+  @Post('/create')
   @UseGuards(AuthGuard('jwt'))
   async createPost(
     @Body() createPostDto: CreatePostDto,
