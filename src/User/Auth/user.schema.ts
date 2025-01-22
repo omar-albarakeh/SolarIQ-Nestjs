@@ -38,6 +38,8 @@ export class User extends Document {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Item' }], default: [] })
   items: Item[];
+
+  
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
