@@ -15,6 +15,7 @@ import { AddToCartDto } from './dto/Add.Cart.dto';
 import { CartDocument } from './Cart.Schema';
 import { RemoveFromCartDto } from './dto/Remove.Cart.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
+import {ClearCartDto} from './dto/clear-cart.dto';
 
 @Controller('cart')
 export class CartController {
@@ -55,5 +56,15 @@ export class CartController {
   @Get('/:userId')
   async getCart(@Param('userId', ParseUUIDPipe) userId: string): Promise<CartDocument> {
     return this.cartService.getCart(userId);
+  }
+
+
+  @Delete('/:userId/clear')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async clearCart(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Body() clearCartDto: ClearCartDto,
+  ): Promise<void> {
+    await this.cartService.clearCart(userId);
   }
 }
