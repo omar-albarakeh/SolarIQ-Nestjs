@@ -9,6 +9,7 @@ import {CommunityModule} from './Community/community.module';
 import { ItemModule } from './Market/items/item.module';
 import { CartModule } from './Market/cart/cart.module';
 import { SolarNewsModule } from './SolarNews/solarnews.module';
+import { ChatModule } from "./chatApp/chat.module";
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { SolarNewsModule } from './SolarNews/solarnews.module';
     CommunityModule,
     ItemModule,
     CartModule,
-    SolarNewsModule
+    SolarNewsModule,
+    ChatModule
   ],
 })
 export class AppModule {}
