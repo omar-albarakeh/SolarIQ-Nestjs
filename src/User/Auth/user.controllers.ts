@@ -81,16 +81,16 @@ export class UserController {
 
 
     @Post('/unblock/:id')
-  @UseGuards(AuthGuard('jwt')) 
-  async unblockUser(@Param('userId') id: string): Promise<{ status: string; message: string }> {
-    try {
-      const user = await this.UserService.unblockUser(id);
-      return {
-        status: 'success',
-        message: `User ${user.name} successfully unblocked.`,
-      };
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to unblock user', error.message);
-    }
+@UseGuards(AuthGuard('jwt'))
+async unblockUser(@Param('id') id: string): Promise<{ status: string; message: string }> {
+  try {
+    const user = await this.UserService.unblockUser(id);
+    return {
+      status: 'success',
+      message: `User ${user.name} successfully unblocked.`,
+    };
+  } catch (error) {
+    throw new InternalServerErrorException('Failed to unblock user', error.message);
   }
+}
 }

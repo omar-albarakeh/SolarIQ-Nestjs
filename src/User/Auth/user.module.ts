@@ -10,7 +10,8 @@ import { UserService } from './user.services';
 import { UserController } from "./user.controllers";
 import { UserRepository } from "./user.repositories";
 import {TokenService} from "./TokenService";
-
+import { SolarInfo, SolarInfoSchema } from '../Solarinfo/SolarInfoSchema';
+import { CommunityPost, CommunityPostSchema } from '../../Community/Schema/CommunityPost.schema';
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -18,7 +19,11 @@ import {TokenService} from "./TokenService";
       inject: [ConfigService],
       useFactory: jwtConfig,
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+     MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: SolarInfo.name, schema: SolarInfoSchema },
+      { name: CommunityPost.name, schema: CommunityPostSchema },
+    ]),
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy, UserRepository,TokenService],
