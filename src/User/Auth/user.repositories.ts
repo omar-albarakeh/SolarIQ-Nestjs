@@ -34,4 +34,18 @@ export class UserRepository {
       .findByIdAndUpdate(userId, { $set: updates }, { new: true })
       .exec();
   }
+
+  async blockUser(id: string): Promise<User> {
+  const user = await this.userModel.findById(id).select('name email blocked');
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+  if (user.blocked) {
+    throw new Error('User is already blocked');
+  }
+
+  user.blocked = true;
+  return await user.save();
+}
 }
