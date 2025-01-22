@@ -59,6 +59,7 @@ export class CommunityPostController {
     return await this.postService.addComment(addCommentDto, authorId);
   }
 
+
   @Get(':postId/comments')
   async getCommentsByPost(@Param('postId') postId: string) {
     if (!isValidObjectId(postId)) {

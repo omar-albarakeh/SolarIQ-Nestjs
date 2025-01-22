@@ -15,15 +15,25 @@ export class CommunityPostRepository {
     @InjectModel(Comment.name)
     private readonly commentModel: Model<Comment>,
   ) {}
+async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promise<CommunityPost> {
+  const newPost = new this.postModel({
+    text: createPostDto.text,
+    author: authorId,
+  });
+  await newPost.save();
 
-  async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promise<CommunityPost> {
-    const newPost = new this.postModel({
-      text: createPostDto.text,
-      author: authorId,
-    });
-    return await newPost.save();
+  // Populate the author field before returning
+  const populatedPost = await this.postModel
+    .findById(newPost._id)
+    .populate('author', 'username')
+    .exec();
+
+  if (!populatedPost) {
+    throw new NotFoundException('Post not found after creation');
   }
 
+  return populatedPost;
+}
 
   async getPosts(): Promise<CommunityPost[]> {
     return await this.postModel
