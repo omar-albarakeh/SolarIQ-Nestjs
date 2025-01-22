@@ -31,7 +31,10 @@ export class ChatService {
     return this.userConnectionRepository.disconnectUser(userId);
   }
 
- 
+  async getChatRoomById(roomId: string) {
+    return this.chatRoomRepository.findById(roomId);
+  }
+
   
   
 }
