@@ -34,7 +34,31 @@ export class CartRepository {
     }
   }
 
-  
+  async addToCart(userId: string, itemId: string, quantity: number): Promise<CartDocument> {
+    try {
+      const item = await this.itemModel.findById(itemId).exec();
+      if (!item) {
+        throw new NotFoundException('Item not found');
+      }
+      let cart = await this.cartModel.findOne({ user: userId }).exec();
+      if (!cart) {
+        cart = new this.cartModel({ user: userId, items: [], totalPrice: 0 });
+      }
+      const itemIndex = cart.items.findIndex(
+        (cartItem) => cartItem.item.toString() === itemId,
+      );
+      if (itemIndex > -1) {
+        cart.items[itemIndex].quantity += quantity;
+      } else {
+        cart.items.push({ item: item._id as Types.ObjectId, quantity });
+      }
+      cart.totalPrice += item.price * quantity;
+      return await cart.save();
+    } catch (error) {
+      this.logger.error(`Failed to add item to cart: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to add item to cart');
+    }
+  }
 
   
 
