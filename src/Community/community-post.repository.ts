@@ -57,6 +57,12 @@ export class CommunityPostRepository {
     return newComment;
   }
 
+  async getCommentsByPost(postId: Types.ObjectId): Promise<Comment[]> {
+    return await this.commentModel
+      .find({ post: postId })
+      .populate('author', 'username')
+      .exec();
+  }
 
   
 
