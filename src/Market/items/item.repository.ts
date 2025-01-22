@@ -78,5 +78,20 @@ export class ItemRepository {
     }
   }
 
-  
+  async delete(id: string): Promise<Item> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid item ID');
+    }
+
+    try {
+      const deletedItem = await this.itemModel.findByIdAndDelete(id).exec();
+      if (!deletedItem) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      return deletedItem;
+    } catch (error) {
+      this.logger.error(`Failed to delete item: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to delete item');
+    }
+  }
 }
