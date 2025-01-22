@@ -2,12 +2,14 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+   InternalServerErrorException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repositories';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
+import {User} from './user.schema';
 
 @Injectable()
 export class UserService {
@@ -83,4 +85,12 @@ export class UserService {
 
     return { accessToken, refreshToken };
   }
+
+   async blockUser(id: string): Promise<User> {
+  try {
+    return await this.userRepository.blockUser(id);
+  } catch (error) {
+    throw new InternalServerErrorException(error.message);
+  }
+}
 }
