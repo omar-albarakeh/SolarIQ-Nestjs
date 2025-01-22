@@ -32,7 +32,10 @@ export class ItemController {
     return this.itemService.getAllItems(skip, limit);
   }
 
-
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Item> {
+    return this.itemService.getItemById(id);
+  }
 
 
 
