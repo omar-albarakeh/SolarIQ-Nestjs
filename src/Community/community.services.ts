@@ -11,6 +11,7 @@ import { Comment } from './Schema/Comment.schema';
 export class CommunityPostService {
   constructor(private readonly postRepository: CommunityPostRepository) {}
 
+
   async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promise<CommunityPost> {
     return await this.postRepository.createPost(createPostDto, authorId);
   }
