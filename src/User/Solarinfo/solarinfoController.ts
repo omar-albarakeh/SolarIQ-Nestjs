@@ -34,5 +34,27 @@ export class SolarInfoController {
     }
   }
 
- 
+  @Post('/update-solar-info')
+  async updateSolarInfo(
+    @Body() updateSolarInfoDto: UpdateSolarInfoDto,
+    @Req() req: Request,
+  ): Promise<{ status: string; message: string }> {
+    try {
+      const authorizationHeader = req.headers.authorization;
+      if (!authorizationHeader) {
+        throw new UnauthorizedException('Authorization header is missing.');
+      }
+      const token = this.tokenService.extractToken(authorizationHeader);
+      await this.solarInfoService.updateSolarInfo(token, updateSolarInfoDto);
+      return {
+        status: 'success',
+        message: 'Solar information updated successfully.',
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to update solar info.');
+    }
+  }
 }
