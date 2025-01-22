@@ -11,6 +11,28 @@ export class SolarInfoController {
     private readonly tokenService: TokenService,
   ) {}
 
+  @Post('/mark-solar-info-complete')
+  async markSolarInfoComplete(
+    @Req() req: Request,
+  ): Promise<{ status: string; message: string }> {
+    try {
+      const authorizationHeader = req.headers.authorization;
+      if (!authorizationHeader) {
+        throw new UnauthorizedException('Authorization header is missing.');
+      }
+      const token = this.tokenService.extractToken(authorizationHeader);
+      await this.solarInfoService.markSolarInfoComplete(token);
+      return {
+        status: 'success',
+        message: 'Solar information marked as complete.',
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to mark solar info complete.');
+    }
+  }
 
  
 }
