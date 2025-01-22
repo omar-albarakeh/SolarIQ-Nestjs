@@ -7,6 +7,8 @@ import { UpdateUserModule } from "./User/updateuser/updateusermodule";
 import { SolarInfoModule } from './User/Solarinfo/SolarinfoModule';
 import {CommunityModule} from './Community/community.module';
 import { ItemModule } from './Market/items/item.module';
+import { CartModule } from './Market/cart/cart.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,7 +28,8 @@ import { ItemModule } from './Market/items/item.module';
     UpdateUserModule,
     SolarInfoModule,
     CommunityModule,
-    ItemModule
+    ItemModule,
+    CartModule
   ],
 })
 export class AppModule {}
