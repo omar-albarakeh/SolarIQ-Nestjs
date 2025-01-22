@@ -24,7 +24,13 @@ export class ItemController {
     return this.itemService.createItem(createItemDto);
   }
 
- 
+  @Get()
+  async findAll(
+    @Query('skip') skip?: number,
+    @Query('limit') limit?: number,
+  ): Promise<Item[]> {
+    return this.itemService.getAllItems(skip, limit);
+  }
 
 
 
