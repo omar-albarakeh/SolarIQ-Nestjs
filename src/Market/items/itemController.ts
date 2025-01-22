@@ -37,7 +37,13 @@ export class ItemController {
     return this.itemService.getItemById(id);
   }
 
-
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateItemDto: UpdateItemDto,
+  ): Promise<Item> {
+    return this.itemService.updateItem(id, updateItemDto);
+  }
 
   
 }
