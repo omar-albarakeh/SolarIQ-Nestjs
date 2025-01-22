@@ -6,4 +6,10 @@ import { UpdateSolarNewsDto } from './dto/UpdateSolarNewsDto';
 @Injectable()
 export class SolarNewsService {
   constructor(private readonly solarNewsRepository: SolarNewsRepository) {}
+
+  async create(createSolarNewsDto: CreateSolarNewsDto) {
+    return this.solarNewsRepository.create(createSolarNewsDto);
+  }
+
+
 }
