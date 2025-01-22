@@ -8,6 +8,7 @@ import { SolarInfoModule } from './User/Solarinfo/SolarinfoModule';
 import {CommunityModule} from './Community/community.module';
 import { ItemModule } from './Market/items/item.module';
 import { CartModule } from './Market/cart/cart.module';
+import { SolarNewsModule } from './SolarNews/solarnews.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { CartModule } from './Market/cart/cart.module';
     SolarInfoModule,
     CommunityModule,
     ItemModule,
-    CartModule
+    CartModule,
+    SolarNewsModule
   ],
 })
 export class AppModule {}

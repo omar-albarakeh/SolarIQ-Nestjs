@@ -8,17 +8,20 @@ import {
   Delete,
   NotFoundException,
   BadRequestException,
+    UseGuards,
 } from '@nestjs/common';
 import { SolarNewsService } from './solarnews.service';
 import { CreateSolarNewsDto } from './dto/addsolarnews';
 import { UpdateSolarNewsDto } from './dto/UpdateSolarNewsDto';
 import { isValidObjectId } from 'mongoose';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('solar-news')
 export class SolarNewsController {
   constructor(private readonly solarNewsService: SolarNewsService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   async create(@Body() createSolarNewsDto: CreateSolarNewsDto) {
     return this.solarNewsService.create(createSolarNewsDto);
   }
@@ -41,6 +44,7 @@ export class SolarNewsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard())
   async update(
     @Param('id') id: string,
     @Body() updateSolarNewsDto: UpdateSolarNewsDto,
@@ -59,6 +63,7 @@ export class SolarNewsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard())
   async remove(@Param('id') id: string) {
     if (!isValidObjectId(id)) {
       throw new BadRequestException('Invalid ID format');
