@@ -5,5 +5,10 @@ import { ChatService } from './chat.service';
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
+  @Post('rooms')
+  async createChatRoom(@Body('name') name: string, @Body('participants') participants: string[]) {
+    return this.chatService.createChatRoom(name, participants);
+  }
+
 
 }
