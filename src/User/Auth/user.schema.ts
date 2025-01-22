@@ -1,5 +1,6 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import {SolarInfoSchema ,SolarInfo} from '../Solarinfo/SolarInfoSchema';
 
 @Schema()
 export class User extends Document {
@@ -23,6 +24,9 @@ export class User extends Document {
 
   @Prop({ default: false })
   isSolarInfoComplete: boolean;
+
+  @Prop({ type: SolarInfoSchema, required: false })
+  solarInfo?: SolarInfo;
 
   @Prop({ default: false })
   blocked: boolean;

@@ -28,4 +28,10 @@ export class UserRepository {
     const user = await this.userModel.findOne({ email }).exec();
     return !!user;
   }
+
+  async updateUser(userId: string, updates: Partial<User>): Promise<User | null> {
+    return await this.userModel
+      .findByIdAndUpdate(userId, { $set: updates }, { new: true })
+      .exec();
+  }
 }
