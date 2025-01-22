@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString, IsNumber, Min } from 'class-validator';
+import { IsNotEmpty, IsMongoId, IsNumber, Min } from 'class-validator';
 
 export class AddToCartDto {
-  @IsString({ message: 'Item ID must be a string' })
+  @IsMongoId({ message: 'Item ID must be a valid MongoDB ObjectId' })
   @IsNotEmpty({ message: 'Item ID is required' })
   itemId: string;
 
