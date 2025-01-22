@@ -28,5 +28,21 @@ export class ItemRepository {
     }
   }
 
+  async findAll(skip?: number, limit?: number): Promise<Item[]> {
+    try {
+      const query = this.itemModel.find().lean();
+      if (skip !== undefined) query.skip(skip);
+      if (limit !== undefined) query.limit(limit);
+      return await query.exec();
+    } catch (error) {
+      this.logger.error(`Failed to fetch items: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to fetch items');
+    }
+  }
+
+
  
+
+
+  
 }
