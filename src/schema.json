@@ -1,0 +1,114 @@
+{
+  "User": {
+    "name": "string",
+    "email": "string",
+    "password": "string",
+    "type": "string",
+    "phone": "string",
+    "address": "string",
+    "isSolarInfoComplete": "boolean",
+    "solarInfo": {
+      "panelsNb": "string",
+      "panelEfficiency": "string",
+      "panelWatt": "string",
+      "panelArea": "string",
+      "inverterCapacity": "number",
+      "installationDate": "string"
+    },
+    "blocked": "boolean",
+    "posts": [
+      {
+        "id": "string",
+        "author": {
+          "id": "string",
+          "name": "string",
+          "email": "string"
+        },
+        "text": "string",
+        "likes": [
+          {
+            "id": "string",
+            "name": "string",
+            "email": "string"
+          }
+        ],
+        "comments": [
+          {
+            "id": "string",
+            "author": {
+              "id": "string",
+              "name": "string",
+              "email": "string"
+            },
+            "text": "string",
+            "likes": [
+              {
+                "id": "string",
+                "name": "string",
+                "email": "string"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "id": "string",
+        "name": "string",
+        "price": "number",
+        "capacity": "number",
+        "category": "string",
+        "description": "string",
+        "imageUrl": "string",
+        "quantity": "number",
+        "seller": {
+          "id": "string",
+          "name": "string",
+          "email": "string"
+        }
+      }
+    ],
+    "cart": {
+      "id": "string",
+      "items": [
+        {
+          "item": {
+            "id": "string",
+            "name": "string",
+            "price": "number"
+          },
+          "quantity": "number"
+        }
+      ],
+      "totalPrice": "number"
+    },
+    "solarNews": [
+      {
+        "id": "string",
+        "content": "string",
+        "title": "string",
+        "author": {
+          "id": "string",
+          "name": "string",
+          "email": "string"
+        }
+      }
+    ],
+    "chatRooms": [
+      {
+        "id": "string",
+        "name": "string",
+        "description": "string",
+        "participants": [
+          {
+            "id": "string",
+            "name": "string",
+            "email": "string"
+          }
+        ]
+      }
+    ],
+    "timestamps": true
+  }
+}
