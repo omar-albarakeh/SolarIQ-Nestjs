@@ -1,14 +1,9 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { CreateItemDto } from './dto/createitem.dto';
-import { UpdateItemDto } from './dto/updateitem.dto';
-import { Item, ItemDocument } from '../items/item.schema';
+import { UpdateItemDto} from './dto/updateitem.dto';
+import { Item, ItemDocument } from './item.schema';
 
 @Injectable()
 export class ItemRepository {
@@ -28,12 +23,9 @@ export class ItemRepository {
     }
   }
 
-  async findAll(skip?: number, limit?: number): Promise<Item[]> {
+  async findAll(skip = 0, limit = 10): Promise<Item[]> {
     try {
-      const query = this.itemModel.find().lean();
-      if (skip !== undefined) query.skip(skip);
-      if (limit !== undefined) query.limit(limit);
-      return await query.exec();
+      return await this.itemModel.find().skip(skip).limit(limit).lean().exec();
     } catch (error) {
       this.logger.error(`Failed to fetch items: ${error.message}`, error.stack);
       throw new BadRequestException('Failed to fetch items');

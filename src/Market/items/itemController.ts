@@ -14,8 +14,8 @@ import {
 } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/createitem.dto';
-import { UpdateItemDto } from './dto/updateitem.dto';
-import { Item } from '../items/item.schema';
+import { UpdateItemDto} from './dto/updateitem.dto';
+import { Item } from './item.schema';
 
 @Controller('items')
 export class ItemController {
@@ -30,7 +30,6 @@ export class ItemController {
     }
   }
 
- 
   @Get()
   async findAll(
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip: number,
@@ -43,7 +42,6 @@ export class ItemController {
     }
   }
 
-
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Item> {
     try {
@@ -55,7 +53,6 @@ export class ItemController {
       throw new BadRequestException(error.message || 'Invalid item ID');
     }
   }
-
 
   @Put(':id')
   async update(
@@ -71,7 +68,6 @@ export class ItemController {
       throw new BadRequestException(error.message || 'Failed to update item');
     }
   }
-
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Item> {

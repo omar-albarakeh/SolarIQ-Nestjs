@@ -6,6 +6,7 @@ import { envValidationSchema } from './JWT-Strategy/env.validation';
 import { UpdateUserModule } from "./User/updateuser/updateusermodule";
 import { SolarInfoModule } from './User/Solarinfo/SolarinfoModule';
 import {CommunityModule} from './Community/community.module';
+import { ItemModule } from './Market/items/item.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,7 @@ import {CommunityModule} from './Community/community.module';
     UpdateUserModule,
     SolarInfoModule,
     CommunityModule,
+    ItemModule
   ],
 })
 export class AppModule {}

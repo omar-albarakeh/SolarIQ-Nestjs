@@ -1,12 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { CreateItemDto } from './dto/createitem.dto';
-import { UpdateItemDto } from './dto/updateitem.dto';
-import { Item } from '../items/item.schema';
+import { UpdateItemDto} from './dto/updateitem.dto';
+import { Item } from './item.schema';
 import { ItemRepository } from './item.repository';
 
 @Injectable()
@@ -24,7 +19,7 @@ export class ItemService {
     }
   }
 
-  async getAllItems(skip?: number, limit?: number): Promise<Item[]> {
+  async getAllItems(skip = 0, limit = 10): Promise<Item[]> {
     try {
       return await this.itemRepository.findAll(skip, limit);
     } catch (error) {
@@ -42,9 +37,6 @@ export class ItemService {
       return item;
     } catch (error) {
       this.logger.error(`Failed to fetch item: ${error.message}`, error.stack);
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
       throw new BadRequestException('Invalid item ID');
     }
   }
@@ -58,13 +50,9 @@ export class ItemService {
       return updatedItem;
     } catch (error) {
       this.logger.error(`Failed to update item: ${error.message}`, error.stack);
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
       throw new BadRequestException('Failed to update item');
     }
   }
-
 
   async deleteItem(id: string): Promise<Item> {
     try {
@@ -75,9 +63,6 @@ export class ItemService {
       return deletedItem;
     } catch (error) {
       this.logger.error(`Failed to delete item: ${error.message}`, error.stack);
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
       throw new BadRequestException('Failed to delete item');
     }
   }
