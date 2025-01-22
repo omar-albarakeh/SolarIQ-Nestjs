@@ -64,6 +64,18 @@ export class CommunityPostRepository {
       .exec();
   }
 
-  
+  async likePost(likePostDto: LikePostDto, userId: Types.ObjectId): Promise<CommunityPost> {
+    const updatedPost = await this.postModel.findByIdAndUpdate(
+      likePostDto.postId,
+      { $addToSet: { likes: userId } },
+      { new: true },
+    ).exec();
+
+    if (!updatedPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return updatedPost;
+  }
 
 }
