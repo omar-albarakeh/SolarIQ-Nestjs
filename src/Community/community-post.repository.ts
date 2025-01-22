@@ -22,7 +22,6 @@ async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promis
   });
   await newPost.save();
 
-  // Populate the author field before returning
   const populatedPost = await this.postModel
     .findById(newPost._id)
     .populate('author', 'username')

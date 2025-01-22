@@ -4,8 +4,11 @@ import { User } from '../../User/Auth/user.schema';
 
 @Schema({ timestamps: true })
 export class ChatRoom extends Document {
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   name: string;
+
+  @Prop({ trim: true })
+  description: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   participants: User[];

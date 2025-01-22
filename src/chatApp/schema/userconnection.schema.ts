@@ -7,11 +7,14 @@ export class UserConnection extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   socketId: string;
 
   @Prop({ type: Date, default: null })
   disconnectedAt: Date | null;
+
+  @Prop({ enum: ['online', 'offline'], default: 'online' })
+  status: string;
 }
 
 export const UserConnectionSchema = SchemaFactory.createForClass(UserConnection);

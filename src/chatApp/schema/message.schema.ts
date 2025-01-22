@@ -11,11 +11,14 @@ export class Message extends Document {
   @Prop({ type: Types.ObjectId, ref: 'ChatRoom', required: true })
   chatRoom: ChatRoom;
 
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true, minlength: 1 })
   content: string;
 
   @Prop({ default: false })
   read: boolean;
+
+  @Prop({ type: Date, default: Date.now })
+  timestamp: Date;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
