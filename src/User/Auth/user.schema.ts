@@ -4,7 +4,8 @@ import { SolarInfoSchema, SolarInfo } from '../Solarinfo/SolarInfoSchema';
 import { CommunityPost } from '../../Community/Schema/CommunityPost.schema';
 import { Item } from '../../Market/items/item.schema';
 import { Cart } from '../../Market/cart/Cart.Schema';
-import {SolarNews} from "../../SolarNews/SolarNews.schema"
+import { SolarNews } from '../../SolarNews/SolarNews.schema';
+import { ChatRoom } from '../../chatApp/schema/chatroom.schema';
 
 @Schema()
 export class User extends Document {
@@ -44,8 +45,11 @@ export class User extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Cart' })
   cart: Cart;
 
-   @Prop({ type: [{ type: Types.ObjectId, ref: 'SolarNews' }], default: [] })
-  solarNews: SolarNews[]; 
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'SolarNews' }], default: [] })
+  solarNews: SolarNews[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'ChatRoom' }], default: [] })
+  chatRooms: ChatRoom[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
