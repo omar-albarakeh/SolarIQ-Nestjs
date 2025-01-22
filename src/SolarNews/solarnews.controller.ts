@@ -58,5 +58,15 @@ export class SolarNewsController {
     return updatedSolarNews;
   }
 
-
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    const deletedSolarNews = await this.solarNewsService.remove(id);
+    if (!deletedSolarNews) {
+      throw new NotFoundException(`Solar News with ID ${id} not found`);
+    }
+    return deletedSolarNews;
+  }
 }
