@@ -17,4 +17,15 @@ export class ChatGateway {
     @InjectModel(UserConnection.name) private userConnectionModel: Model<UserConnection>,
   ) {}
 
+  @SubscribeMessage('joinRoom')
+  async handleJoinRoom(@MessageBody() data: { userId: string, roomId: string }) {
+    const { userId, roomId } = data;
+    const userConnection = await this.userConnectionModel.findOne({ user: userId });
+    if (userConnection) {
+      userConnection.socketId = this.server.sockets.sockets[userConnection.socketId].id;
+      await userConnection.save();
+    }
+    this.server.to(roomId).emit('userJoined', { userId, roomId });
+  }
+
 }
