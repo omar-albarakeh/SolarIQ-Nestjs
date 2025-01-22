@@ -1,6 +1,7 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import {SolarInfoSchema ,SolarInfo} from '../Solarinfo/SolarInfoSchema';
+import { CommunityPost } from '../../Community/Schema/CommunityPost.schema';
 
 @Schema()
 export class User extends Document {
@@ -30,6 +31,9 @@ export class User extends Document {
 
   @Prop({ default: false })
   blocked: boolean;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'CommunityPost' }], default: [] })
+  posts: CommunityPost[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
