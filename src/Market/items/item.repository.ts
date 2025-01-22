@@ -18,7 +18,6 @@ export class ItemRepository {
     @InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
   ) {}
 
-
   async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
       const createdItem = new this.itemModel(createItemDto);
@@ -40,7 +39,6 @@ export class ItemRepository {
       throw new BadRequestException('Failed to fetch items');
     }
   }
-
 
   async findOne(id: string): Promise<Item> {
     if (!isValidObjectId(id)) {

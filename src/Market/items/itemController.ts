@@ -9,6 +9,8 @@ import {
   Query,
   BadRequestException,
   NotFoundException,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/createitem.dto';
@@ -21,32 +23,65 @@ export class ItemController {
 
   @Post()
   async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
-    return this.itemService.createItem(createItemDto);
+    try {
+      return await this.itemService.createItem(createItemDto);
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Failed to create item');
+    }
   }
 
+ 
   @Get()
   async findAll(
-    @Query('skip') skip?: number,
-    @Query('limit') limit?: number,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ): Promise<Item[]> {
-    return this.itemService.getAllItems(skip, limit);
+    try {
+      return await this.itemService.getAllItems(skip, limit);
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Failed to fetch items');
+    }
   }
+
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Item> {
-    return this.itemService.getItemById(id);
+    try {
+      return await this.itemService.getItemById(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException(error.message || 'Invalid item ID');
+    }
   }
+
 
   @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateItemDto: UpdateItemDto,
   ): Promise<Item> {
-    return this.itemService.updateItem(id, updateItemDto);
+    try {
+      return await this.itemService.updateItem(id, updateItemDto);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException(error.message || 'Failed to update item');
+    }
   }
+
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Item> {
-    return this.itemService.deleteItem(id);
+    try {
+      return await this.itemService.deleteItem(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException(error.message || 'Failed to delete item');
+    }
   }
 }

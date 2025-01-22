@@ -33,7 +33,6 @@ export class ItemService {
     }
   }
 
-
   async getItemById(id: string): Promise<Item> {
     try {
       const item = await this.itemRepository.findOne(id);
@@ -50,7 +49,6 @@ export class ItemService {
     }
   }
 
-
   async updateItem(id: string, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
       const updatedItem = await this.itemRepository.update(id, updateItemDto);
@@ -66,6 +64,7 @@ export class ItemService {
       throw new BadRequestException('Failed to update item');
     }
   }
+
 
   async deleteItem(id: string): Promise<Item> {
     try {
