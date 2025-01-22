@@ -93,4 +93,12 @@ export class UserService {
     throw new InternalServerErrorException(error.message);
   }
 }
+
+async unblockUser(id: string): Promise<User> {
+  try {
+    return await this.userRepository.unblockUser(id);
+  } catch (error) {
+    throw new InternalServerErrorException(error.message);
+  }
+}
 }
