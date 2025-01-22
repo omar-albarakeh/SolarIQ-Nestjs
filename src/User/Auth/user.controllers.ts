@@ -65,17 +65,32 @@ export class UserController {
     }
   }
 
-     @Post('/block/:userId')
+     @Post('/block/:id')
   @UseGuards(AuthGuard('jwt')) 
-  async blockUser(@Param('userId') userId: string): Promise<{ status: string; message: string }> {
+  async blockUser(@Param('id') id: string): Promise<{ status: string; message: string }> {
     try {
-      const user = await this.UserService.blockUser(userId);
+      const user = await this.UserService.blockUser(id);
       return {
         status: 'success',
         message: `User ${user.name} successfully blocked.`,
       };
     } catch (error) {
       throw new InternalServerErrorException('Failed to block user', error.message);
+    }
+  }
+
+
+    @Post('/unblock/:id')
+  @UseGuards(AuthGuard('jwt')) 
+  async unblockUser(@Param('userId') id: string): Promise<{ status: string; message: string }> {
+    try {
+      const user = await this.UserService.unblockUser(id);
+      return {
+        status: 'success',
+        message: `User ${user.name} successfully unblocked.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to unblock user', error.message);
     }
   }
 }
