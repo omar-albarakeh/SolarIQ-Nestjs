@@ -36,7 +36,13 @@ export class CommunityPostService {
     return await this.postRepository.getCommentsByPost(postId);
   }
 
-
+  async likePost(likePostDto: LikePostDto, userId: Types.ObjectId): Promise<CommunityPost> {
+    const post = await this.postRepository.findPostById(new Types.ObjectId(likePostDto.postId));
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return await this.postRepository.likePost(likePostDto, userId);
+  }
 
 
 }
