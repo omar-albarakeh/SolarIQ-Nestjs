@@ -8,7 +8,9 @@ import {
   InternalServerErrorException,
   Res,
   UseGuards,
+    Param,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { UserService } from './user.services';
 import { SignUpDto } from './dto/signup.dto';
@@ -60,6 +62,20 @@ export class UserController {
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid login credentials.', error.message);
+    }
+  }
+
+     @Post('/block/:userId')
+  @UseGuards(AuthGuard('jwt')) 
+  async blockUser(@Param('userId') userId: string): Promise<{ status: string; message: string }> {
+    try {
+      const user = await this.UserService.blockUser(userId);
+      return {
+        status: 'success',
+        message: `User ${user.name} successfully blocked.`,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to block user', error.message);
     }
   }
 }
