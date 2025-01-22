@@ -112,7 +112,21 @@ export class CartRepository {
     }
   }
 
-  
+  async getCart(userId: string): Promise<CartDocument> {
+    try {
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .populate('items.item')
+        .exec();
+      if (!cart) {
+        throw new NotFoundException('Cart not found');
+      }
+      return cart;
+    } catch (error) {
+      this.logger.error(`Failed to fetch cart: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to fetch cart');
+    }
+  }
 
  
 }
