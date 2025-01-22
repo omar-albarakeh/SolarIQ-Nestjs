@@ -15,7 +15,11 @@ export class ChatService {
     return this.chatRoomRepository.create(name, participants);
   }
 
+  async addMessage(senderId: string, roomId: string, content: string) {
+    return this.messageRepository.create(senderId, roomId, content);
+  }
 
+ 
   
   
 }
