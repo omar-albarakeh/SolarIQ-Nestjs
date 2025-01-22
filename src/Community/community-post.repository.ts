@@ -78,4 +78,17 @@ export class CommunityPostRepository {
     return updatedPost;
   }
 
+  async unlikePost(likePostDto: LikePostDto, userId: Types.ObjectId): Promise<CommunityPost> {
+    const updatedPost = await this.postModel.findByIdAndUpdate(
+      likePostDto.postId,
+      { $pull: { likes: userId } },
+      { new: true },
+    ).exec();
+
+    if (!updatedPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return updatedPost;
+  }
 }
