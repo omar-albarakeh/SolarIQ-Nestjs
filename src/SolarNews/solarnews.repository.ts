@@ -16,6 +16,10 @@ export class SolarNewsRepository {
     return createdSolarNews.save();
   }
 
+  async findAll(): Promise<SolarNews[]> {
+    return this.solarNewsModel.find().exec();
+  }
+
  
 
 
