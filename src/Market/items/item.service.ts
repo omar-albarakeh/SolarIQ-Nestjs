@@ -24,6 +24,16 @@ export class ItemService {
     }
   }
 
-  
+  async getAllItems(skip?: number, limit?: number): Promise<Item[]> {
+    try {
+      return await this.itemRepository.findAll(skip, limit);
+    } catch (error) {
+      this.logger.error(`Failed to fetch items: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to fetch items');
+    }
+  }
+
+
+
  
 }
