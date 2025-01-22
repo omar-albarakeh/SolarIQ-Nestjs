@@ -15,6 +15,9 @@ export class CommunityPostService {
     return await this.postRepository.createPost(createPostDto, authorId);
   }
 
+  async getPosts(): Promise<CommunityPost[]> {
+    return await this.postRepository.getPosts();
+  }
 
 
  
