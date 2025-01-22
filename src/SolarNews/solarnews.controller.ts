@@ -40,5 +40,23 @@ export class SolarNewsController {
     return solarNews;
   }
 
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateSolarNewsDto: UpdateSolarNewsDto,
+  ) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+    const updatedSolarNews = await this.solarNewsService.update(
+      id,
+      updateSolarNewsDto,
+    );
+    if (!updatedSolarNews) {
+      throw new NotFoundException(`Solar News with ID ${id} not found`);
+    }
+    return updatedSolarNews;
+  }
+
 
 }
