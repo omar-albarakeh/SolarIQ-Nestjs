@@ -34,4 +34,8 @@ export class ChatController {
     return this.chatService.addParticipantToRoom(roomId, userId);
   }
 
+  @Get('rooms')
+  async getAllChatRooms() {
+    return this.chatService.getAllChatRooms();
+  }
 }
