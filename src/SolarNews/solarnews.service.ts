@@ -23,5 +23,7 @@ export class SolarNewsService {
     return this.solarNewsRepository.update(id, updateSolarNewsDto);
   }
 
-
+  async remove(id: string) {
+    return this.solarNewsRepository.remove(id);
+  }
 }
