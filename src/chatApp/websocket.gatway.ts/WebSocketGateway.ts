@@ -1,5 +1,11 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Message } from '../schema/message.schema';
@@ -18,19 +24,38 @@ export class ChatGateway {
   ) {}
 
   @SubscribeMessage('joinRoom')
-  async handleJoinRoom(@MessageBody() data: { userId: string, roomId: string }) {
+  async handleJoinRoom(
+    @MessageBody() data: { userId: string; roomId: string },
+    @ConnectedSocket() socket: Socket,
+  ) {
     const { userId, roomId } = data;
+
+    socket.join(roomId);
+
     const userConnection = await this.userConnectionModel.findOne({ user: userId });
     if (userConnection) {
-      userConnection.socketId = this.server.sockets.sockets[userConnection.socketId].id;
+      userConnection.socketId = socket.id;
       await userConnection.save();
     }
+
     this.server.to(roomId).emit('userJoined', { userId, roomId });
   }
 
   @SubscribeMessage('sendMessage')
-  async handleSendMessage(@MessageBody() data: { senderId: string, roomId: string, content: string }) {
+  async handleSendMessage(
+    @MessageBody() data: { senderId: string; roomId: string; content: string },
+    @ConnectedSocket() socket: Socket,
+  ) {
     const { senderId, roomId, content } = data;
+
+    const sender = await this.userConnectionModel.findOne({ user: senderId });
+    const room = await this.chatRoomModel.findById(roomId);
+
+    if (!sender || !room) {
+      socket.emit('error', { message: 'Sender or room not found' });
+      return;
+    }
+
     const message = new this.messageModel({
       sender: senderId,
       chatRoom: roomId,
@@ -38,6 +63,7 @@ export class ChatGateway {
       timestamp: new Date(),
     });
     await message.save();
+
     this.server.to(roomId).emit('newMessage', message);
   }
 }

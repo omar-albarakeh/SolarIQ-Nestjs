@@ -2,7 +2,7 @@ import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { User } from '../../User/Auth/user.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class UserConnection extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: User;
@@ -10,11 +10,8 @@ export class UserConnection extends Document {
   @Prop({ required: true })
   socketId: string;
 
-  @Prop({ default: Date.now })
-  connectedAt: Date;
-
-  @Prop({ default: null })
-  disconnectedAt: Date;
+  @Prop({ type: Date, default: null })
+  disconnectedAt: Date | null;
 }
 
 export const UserConnectionSchema = SchemaFactory.createForClass(UserConnection);

@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import { User } from '../../User/Auth/user.schema';
 import { ChatRoom } from './chatroom.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Message extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   sender: User;
@@ -13,9 +13,6 @@ export class Message extends Document {
 
   @Prop({ required: true })
   content: string;
-
-  @Prop({ default: Date.now })
-  timestamp: Date;
 
   @Prop({ default: false })
   read: boolean;

@@ -15,29 +15,35 @@ export class ChatService {
     return this.chatRoomRepository.create(name, participants);
   }
 
+
   async addMessage(senderId: string, roomId: string, content: string) {
     return this.messageRepository.create(senderId, roomId, content);
   }
 
-  async getMessagesByRoomId(roomId: string) {
-    return this.messageRepository.findByRoomId(roomId);
+
+  async getMessagesByRoomId(roomId: string, skip?: number, limit?: number) {
+    return this.messageRepository.findByRoomId(roomId, skip, limit);
   }
 
+ 
   async connectUser(userId: string, socketId: string) {
     return this.userConnectionRepository.connectUser(userId, socketId);
   }
+
 
   async disconnectUser(userId: string) {
     return this.userConnectionRepository.disconnectUser(userId);
   }
 
+ 
   async getChatRoomById(roomId: string) {
     return this.chatRoomRepository.findById(roomId);
   }
 
-  async addParticipantToRoom(roomId: string, userId: string) {
+  async addParticipant(roomId: string, userId: string) {
     return this.chatRoomRepository.addParticipant(roomId, userId);
   }
+
 
   async getAllChatRooms() {
     return this.chatRoomRepository.findAll();
