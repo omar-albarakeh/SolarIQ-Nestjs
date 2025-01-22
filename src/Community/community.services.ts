@@ -20,7 +20,13 @@ export class CommunityPostService {
   }
 
 
- 
+  async addComment(addCommentDto: AddCommentDto, authorId: Types.ObjectId): Promise<Comment> {
+    const post = await this.postRepository.findPostById(new Types.ObjectId(addCommentDto.postId));
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return await this.postRepository.addComment(addCommentDto, authorId);
+  }
 
 
 
