@@ -14,6 +14,7 @@ import { CartService } from './cart.service';
 import { AddToCartDto } from './dto/Add.Cart.dto';
 import { CartDocument } from './Cart.Schema';
 import { RemoveFromCartDto } from './dto/Remove.Cart.dto';
+import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 
 @Controller('cart')
 export class CartController {
@@ -40,6 +41,15 @@ export class CartController {
   ): Promise<CartDocument> {
     const { itemId } = removeFromCartDto;
     return this.cartService.removeFromCart(userId, itemId);
+  }
+
+   @Patch('/:userId/update')
+  async updateCartItem(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Body() updateCartItemDto: UpdateCartItemDto,
+  ): Promise<CartDocument> {
+    const { itemId, quantity } = updateCartItemDto;
+    return this.cartService.updateCartItem(userId, itemId, quantity);
   }
 
 }
