@@ -3,7 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './User/Auth/user.module';
 import { envValidationSchema } from './JWT-Strategy/env.validation';
-import {UpdateUserModule} from "./User/updateuser/updateusermodule"
+import {UpdateUserModule} from "./User/updateuser/updateusermodule";
+import { SolarInfoModule } from './User/Solarinfo/SolarinfoModule';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import {UpdateUserModule} from "./User/updateuser/updateusermodule"
     }),
     UserModule,
     UpdateUserModule,
+    SolarInfoModule,
     
   ],
 })
