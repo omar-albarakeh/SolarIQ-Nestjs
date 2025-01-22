@@ -11,7 +11,6 @@ import { Comment } from './Schema/Comment.schema';
 export class CommunityPostService {
   constructor(private readonly postRepository: CommunityPostRepository) {}
 
-
   async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promise<CommunityPost> {
     return await this.postRepository.createPost(createPostDto, authorId);
   }
@@ -19,7 +18,6 @@ export class CommunityPostService {
   async getPosts(): Promise<CommunityPost[]> {
     return await this.postRepository.getPosts();
   }
-
 
   async addComment(addCommentDto: AddCommentDto, authorId: Types.ObjectId): Promise<Comment> {
     const post = await this.postRepository.findPostById(new Types.ObjectId(addCommentDto.postId));
@@ -44,7 +42,6 @@ export class CommunityPostService {
     }
     return await this.postRepository.likePost(likePostDto, userId);
   }
-
   async unlikePost(likePostDto: LikePostDto, userId: Types.ObjectId): Promise<CommunityPost> {
     const post = await this.postRepository.findPostById(new Types.ObjectId(likePostDto.postId));
     if (!post) {
