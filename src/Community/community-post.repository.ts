@@ -36,7 +36,9 @@ export class CommunityPostRepository {
       .exec();
   }
 
-
+  async findPostById(postId: Types.ObjectId): Promise<CommunityPost | null> {
+    return await this.postModel.findById(postId).exec();
+  }
 
 
 
