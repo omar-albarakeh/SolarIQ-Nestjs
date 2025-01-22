@@ -11,6 +11,11 @@ export class ChatService {
     private readonly userConnectionRepository: UserConnectionRepository,
   ) {}
 
- 
+  async createChatRoom(name: string, participants: string[]) {
+    return this.chatRoomRepository.create(name, participants);
+  }
+
+
+  
   
 }
