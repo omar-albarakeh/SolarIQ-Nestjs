@@ -19,4 +19,16 @@ import { Item } from '../items/item.schema';
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
+  @Post()
+  async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+    return this.itemService.createItem(createItemDto);
+  }
+
+ 
+
+
+
+
+
+  
 }
