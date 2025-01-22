@@ -23,5 +23,10 @@ export class SolarNewsController {
     return this.solarNewsService.create(createSolarNewsDto);
   }
 
+  @Get()
+  async findAll() {
+    return this.solarNewsService.findAll();
+  }
+
 
 }
