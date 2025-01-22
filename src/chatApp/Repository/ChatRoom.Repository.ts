@@ -7,6 +7,12 @@ import { ChatRoom } from '../schema/chatroom.schema';
 export class ChatRoomRepository {
   constructor(@InjectModel(ChatRoom.name) private chatRoomModel: Model<ChatRoom>) {}
 
+  async create(name: string, participants: string[]) {
+    const chatRoom = new this.chatRoomModel({ name, participants });
+    return chatRoom.save();
+  }
+
+  
+
+
 }
-
-
