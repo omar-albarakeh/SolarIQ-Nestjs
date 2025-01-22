@@ -58,6 +58,25 @@ export class ItemRepository {
     }
   }
 
+  async update(id: string, updateItemDto: UpdateItemDto): Promise<Item> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid item ID');
+    }
+
+    try {
+      const updatedItem = await this.itemModel
+        .findByIdAndUpdate(id, updateItemDto, { new: true, runValidators: true })
+        .exec();
+
+      if (!updatedItem) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      return updatedItem;
+    } catch (error) {
+      this.logger.error(`Failed to update item: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to update item');
+    }
+  }
 
   
 }
