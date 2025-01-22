@@ -30,5 +30,7 @@ export class SolarNewsRepository {
       .exec();
   }
 
- 
+  async remove(id: string): Promise<SolarNews | null> {
+    return this.solarNewsModel.findByIdAndDelete(id).exec();
+  }
 }
