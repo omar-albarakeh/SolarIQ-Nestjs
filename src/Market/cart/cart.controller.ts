@@ -52,4 +52,8 @@ export class CartController {
     return this.cartService.updateCartItem(userId, itemId, quantity);
   }
 
+  @Get('/:userId')
+  async getCart(@Param('userId', ParseUUIDPipe) userId: string): Promise<CartDocument> {
+    return this.cartService.getCart(userId);
+  }
 }
