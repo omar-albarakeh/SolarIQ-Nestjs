@@ -7,8 +7,9 @@ import { User, UserSchema } from './user.schema';
 import { JwtStrategy } from '../../JWT-Strategy/jwt.strategy';
 import { jwtConfig } from '../../JWT-Strategy/jwt.config';
 import { UserService } from './user.services';
-import {UserController} from "./user.controllers";
-import {UserRepository} from "./user.repositories";
+import { UserController } from "./user.controllers";
+import { UserRepository } from "./user.repositories";
+import {TokenService} from "./TokenService";
 
 @Module({
   imports: [
@@ -19,8 +20,8 @@ import {UserRepository} from "./user.repositories";
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-    controllers: [UserController],
-  providers: [UserService, JwtStrategy, UserRepository],
-  exports: [UserService, JwtModule, PassportModule, UserRepository],
+  controllers: [UserController],
+  providers: [UserService, JwtStrategy, UserRepository,TokenService],
+  exports: [UserService, JwtModule, PassportModule, UserRepository,TokenService],
 })
 export class UserModule {}
