@@ -60,7 +60,30 @@ export class CartRepository {
     }
   }
 
-  
+  async removeFromCart(userId: string, itemId: string): Promise<CartDocument> {
+    try {
+      const cart = await this.cartModel.findOne({ user: userId }).exec();
+      if (!cart) {
+        throw new NotFoundException('Cart not found');
+      }
+      const itemIndex = cart.items.findIndex(
+        (cartItem) => cartItem.item.toString() === itemId,
+      );
+      if (itemIndex === -1) {
+        throw new NotFoundException('Item not found in cart');
+      }
+      const item = await this.itemModel.findById(itemId).exec();
+      if (!item) {
+        throw new NotFoundException('Item not found');
+      }
+      cart.totalPrice -= item.price * cart.items[itemIndex].quantity;
+      cart.items.splice(itemIndex, 1);
+      return await cart.save();
+    } catch (error) {
+      this.logger.error(`Failed to remove item from cart: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to remove item from cart');
+    }
+  }
 
  
 
