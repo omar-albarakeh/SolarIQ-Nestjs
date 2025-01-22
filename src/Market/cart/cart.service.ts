@@ -22,6 +22,9 @@ export class CartService {
     return await this.cartRepository.updateCartItem(userId, itemId, quantity);
   }
 
- 
+  async getCart(userId: string): Promise<CartDocument> {
+    return await this.cartRepository.getCart(userId);
+  }
+
   
 }
