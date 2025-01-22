@@ -15,4 +15,10 @@ export class SolarNewsService {
     return this.solarNewsRepository.findAll();
   }
 
+  async findOne(id: string) {
+    return this.solarNewsRepository.findOne(id);
+  }
+
+
+
 }
