@@ -2,20 +2,22 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
-   InternalServerErrorException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repositories';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
-import {User} from './user.schema';
+import { User } from './user.schema';
+import { CartService } from '../../Market/cart/cart.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
+    private readonly cartService: CartService,
   ) {}
 
   private async hashPassword(password: string): Promise<string> {
@@ -40,9 +42,9 @@ export class UserService {
     return bcrypt.compare(plainPassword, hashedPassword);
   }
 
-  private createUserPayload(user: any): { id: string; email: string; name: string; type: string; phone: string; address: string } {
+  private createUserPayload(user: User): { id: string; email: string; name: string; type: string; phone: string; address: string } {
     return {
-      id: user._id.toString(),
+      id: user.id.toString(),
       email: user.email,
       name: user.name,
       type: user.type,
@@ -52,14 +54,16 @@ export class UserService {
   }
 
   async signUp(signUpDto: SignUpDto): Promise<string> {
-    const { email, password, name, type = 'user', phone, address } = signUpDto;
+    const { email, password, name, type, phone, address } = signUpDto;
+
 
     if (await this.userRepository.isEmailTaken(email)) {
       throw new ConflictException('Email is already registered.');
     }
 
     const hashedPassword = await this.hashPassword(password);
-    const user = await this.userRepository.createUser({
+
+    const user: User = await this.userRepository.createUser({
       name,
       email,
       password: hashedPassword,
@@ -68,12 +72,15 @@ export class UserService {
       address,
     });
 
+    await this.cartService.createCart(user.id.toString());
+
     const tokenPayload = this.createUserPayload(user);
     return this.generateToken(tokenPayload);
   }
 
   async login(loginDto: LoginDto): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = loginDto;
+
     const user = await this.userRepository.findUserByEmail(email);
 
     if (!user || !(await this.verifyPassword(password, user.password))) {
@@ -86,19 +93,19 @@ export class UserService {
     return { accessToken, refreshToken };
   }
 
-   async blockUser(id: string): Promise<User> {
-  try {
-    return await this.userRepository.blockUser(id);
-  } catch (error) {
-    throw new InternalServerErrorException(error.message);
+  async blockUser(id: string): Promise<User> {
+    try {
+      return await this.userRepository.blockUser(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
-}
 
-async unblockUser(id: string): Promise<User> {
-  try {
-    return await this.userRepository.unblockUser(id);
-  } catch (error) {
-    throw new InternalServerErrorException(error.message);
+  async unblockUser(id: string): Promise<User> {
+    try {
+      return await this.userRepository.unblockUser(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
-}
 }
