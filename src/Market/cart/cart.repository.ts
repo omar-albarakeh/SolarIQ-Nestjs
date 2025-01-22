@@ -85,7 +85,32 @@ export class CartRepository {
     }
   }
 
- 
+  async updateCartItem(userId: string, itemId: string, quantity: number): Promise<CartDocument> {
+    try {
+      const cart = await this.cartModel.findOne({ user: userId }).exec();
+      if (!cart) {
+        throw new NotFoundException('Cart not found');
+      }
+      const itemIndex = cart.items.findIndex(
+        (cartItem) => cartItem.item.toString() === itemId,
+      );
+      if (itemIndex === -1) {
+        throw new NotFoundException('Item not found in cart');
+      }
+      const item = await this.itemModel.findById(itemId).exec();
+      if (!item) {
+        throw new NotFoundException('Item not found');
+      }
+      const oldQuantity = cart.items[itemIndex].quantity;
+      const priceDifference = item.price * (quantity - oldQuantity);
+      cart.items[itemIndex].quantity = quantity;
+      cart.totalPrice += priceDifference;
+      return await cart.save();
+    } catch (error) {
+      this.logger.error(`Failed to update cart item: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to update cart item');
+    }
+  }
 
   
 
