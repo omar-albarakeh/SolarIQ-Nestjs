@@ -29,5 +29,26 @@ export class SolarInfoService {
     }
   }
 
-  
+  async updateSolarInfo(token: string, updateSolarInfoDto: UpdateSolarInfoDto): Promise<any> {
+    try {
+      const decoded = this.jwtService.verify(token, { secret: process.env.JWT_SECRET });
+
+      const user = await this.userRepository.findUserById(decoded.id);
+
+      if (!user) {
+        throw new UnauthorizedException('User not found.');
+      }
+
+      const updatedUser = await this.SolarInfoRepository.updateSolarInfo(user.id.toString(), updateSolarInfoDto);
+
+      if (!updatedUser) {
+        throw new InternalServerErrorException('Failed to update solar information.');
+      }
+
+      return updatedUser;
+    } catch (error) {
+      console.error('Update solar info error:', error.message);
+      throw new UnauthorizedException('Invalid or expired token.');
+    }
+  }
 }
