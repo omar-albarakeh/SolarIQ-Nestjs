@@ -20,5 +20,27 @@ export class CartRepository {
     @InjectModel(Item.name) private readonly itemModel: Model<Item>,
   ) {}
 
+  async createCart(userId: string): Promise<CartDocument> {
+    try {
+      const existingCart = await this.cartModel.findOne({ user: userId }).exec();
+      if (existingCart) {
+        throw new BadRequestException('User already has a cart');
+      }
+      const cart = new this.cartModel({ user: userId, items: [], totalPrice: 0 });
+      return await cart.save();
+    } catch (error) {
+      this.logger.error(`Failed to create cart: ${error.message}`, error.stack);
+      throw new BadRequestException('Failed to create cart');
+    }
+  }
 
+  
+
+  
+
+ 
+
+  
+
+ 
 }
