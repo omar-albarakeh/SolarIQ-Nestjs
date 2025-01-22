@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import { SolarInfoSchema, SolarInfo } from '../Solarinfo/SolarInfoSchema';
 import { CommunityPost } from '../../Community/Schema/CommunityPost.schema';
 import { Item } from '../../Market/items/item.schema';
-import {Cart} from "../../Market/cart/Cart.Schema";
+import { Cart } from '../../Market/cart/Cart.Schema';
 
 @Schema()
 export class User extends Document {
@@ -40,8 +40,8 @@ export class User extends Document {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Item' }], default: [] })
   items: Item[];
 
-    @Prop({ type: Types.ObjectId, ref: 'Cart' })
-  cart: Cart; 
+  @Prop({ type: Types.ObjectId, ref: 'Cart' })
+  cart: Cart;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
