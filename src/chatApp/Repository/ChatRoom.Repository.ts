@@ -12,7 +12,10 @@ export class ChatRoomRepository {
     return chatRoom.save();
   }
 
-  
+  async findById(id: string) {
+    return this.chatRoomModel.findById(id).populate('participants').exec();
+  }
+
 
 
 }
