@@ -24,7 +24,17 @@ export class CommunityPostRepository {
     return await newPost.save();
   }
 
-  
+  async getPosts(): Promise<CommunityPost[]> {
+    return await this.postModel
+      .find()
+      .populate('author', 'username')
+      .populate('likes', 'username')
+      .populate({
+        path: 'comments',
+        populate: { path: 'author', select: 'username' },
+      })
+      .exec();
+  }
 
 
 
