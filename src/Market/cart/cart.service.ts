@@ -10,6 +10,9 @@ export class CartService {
     return await this.cartRepository.createCart(userId);
   }
 
+  async addToCart(userId: string, itemId: string, quantity: number): Promise<CartDocument> {
+    return await this.cartRepository.addToCart(userId, itemId, quantity);
+  }
 
   
 
