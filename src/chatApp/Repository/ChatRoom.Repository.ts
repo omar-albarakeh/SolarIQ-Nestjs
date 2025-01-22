@@ -16,6 +16,12 @@ export class ChatRoomRepository {
     return this.chatRoomModel.findById(id).populate('participants').exec();
   }
 
-
+  async addParticipant(roomId: string, userId: string) {
+    return this.chatRoomModel.findByIdAndUpdate(
+      roomId,
+      { $addToSet: { participants: userId } },
+      { new: true },
+    );
+  }
 
 }
