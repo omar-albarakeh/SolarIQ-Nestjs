@@ -28,4 +28,16 @@ export class ChatGateway {
     this.server.to(roomId).emit('userJoined', { userId, roomId });
   }
 
+  @SubscribeMessage('sendMessage')
+  async handleSendMessage(@MessageBody() data: { senderId: string, roomId: string, content: string }) {
+    const { senderId, roomId, content } = data;
+    const message = new this.messageModel({
+      sender: senderId,
+      chatRoom: roomId,
+      content,
+      timestamp: new Date(),
+    });
+    await message.save();
+    this.server.to(roomId).emit('newMessage', message);
+  }
 }
