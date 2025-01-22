@@ -17,5 +17,13 @@ export class UserConnectionRepository {
     return userConnection.save();
   }
 
+  async disconnectUser(userId: string) {
+    const userConnection = await this.userConnectionModel.findOne({ user: userId });
+    if (userConnection) {
+      userConnection.disconnectedAt = new Date();
+      return userConnection.save();
+    }
+  }
+
 
 }
