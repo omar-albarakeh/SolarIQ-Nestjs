@@ -26,5 +26,7 @@ export class CartService {
     return await this.cartRepository.getCart(userId);
   }
 
-  
+  async clearCart(userId: string): Promise<CartDocument> {
+    return await this.cartRepository.clearCart(userId);
+  }
 }
