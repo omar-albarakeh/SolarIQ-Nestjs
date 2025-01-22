@@ -25,5 +25,7 @@ export class UserConnectionRepository {
     }
   }
 
-
+  async findByUserId(userId: string) {
+    return this.userConnectionModel.findOne({ user: userId }).exec();
+  }
 }
