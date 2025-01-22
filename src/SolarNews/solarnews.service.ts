@@ -11,5 +11,8 @@ export class SolarNewsService {
     return this.solarNewsRepository.create(createSolarNewsDto);
   }
 
+  async findAll() {
+    return this.solarNewsRepository.findAll();
+  }
 
 }
