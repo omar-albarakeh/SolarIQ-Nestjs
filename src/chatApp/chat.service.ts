@@ -23,6 +23,10 @@ export class ChatService {
     return this.messageRepository.findByRoomId(roomId);
   }
 
+  async connectUser(userId: string, socketId: string) {
+    return this.userConnectionRepository.connectUser(userId, socketId);
+  }
+
  
   
   
