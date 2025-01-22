@@ -40,6 +40,22 @@ export class CommunityPostRepository {
     return await this.postModel.findById(postId).exec();
   }
 
+  async addComment(addCommentDto: AddCommentDto, authorId: Types.ObjectId): Promise<Comment> {
+    const newComment = new this.commentModel({
+      text: addCommentDto.text,
+      post: addCommentDto.postId,
+      author: authorId,
+    });
+    await newComment.save();
+
+    await this.postModel.findByIdAndUpdate(
+      addCommentDto.postId,
+      { $push: { comments: newComment._id } },
+      { new: true },
+    );
+
+    return newComment;
+  }
 
 
   
