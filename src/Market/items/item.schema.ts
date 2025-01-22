@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-@Schema({ timestamps: true }) 
+
+@Schema({ timestamps: true })
 export class Item extends Document {
   @Prop({ type: String, required: true })
   name: string;
@@ -24,8 +25,8 @@ export class Item extends Document {
   @Prop({ required: true })
   quantity: number;
 
-  @Prop({ required: true, ref: 'User' })
-  sellerId: string;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  sellerId: Types.ObjectId;
 }
 
 export const ItemSchema = SchemaFactory.createForClass(Item);
