@@ -7,4 +7,15 @@ import { UserConnection } from '../schema/userconnection.schema';
 export class UserConnectionRepository {
   constructor(@InjectModel(UserConnection.name) private userConnectionModel: Model<UserConnection>) {}
 
+  async connectUser(userId: string, socketId: string) {
+    let userConnection = await this.userConnectionModel.findOne({ user: userId });
+    if (!userConnection) {
+      userConnection = new this.userConnectionModel({ user: userId, socketId });
+    } else {
+      userConnection.socketId = socketId;
+    }
+    return userConnection.save();
+  }
+
+
 }
