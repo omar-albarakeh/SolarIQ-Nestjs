@@ -13,6 +13,7 @@ import {
 import { CartService } from './cart.service';
 import { AddToCartDto } from './dto/Add.Cart.dto';
 import { CartDocument } from './Cart.Schema';
+import { RemoveFromCartDto } from './dto/Remove.Cart.dto';
 
 @Controller('cart')
 export class CartController {
@@ -32,5 +33,13 @@ export class CartController {
     return this.cartService.addToCart(userId, itemId, quantity);
   }
 
+  @Delete('/:userId/remove')
+  async removeFromCart(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Body() removeFromCartDto: RemoveFromCartDto,
+  ): Promise<CartDocument> {
+    const { itemId } = removeFromCartDto;
+    return this.cartService.removeFromCart(userId, itemId);
+  }
 
 }
