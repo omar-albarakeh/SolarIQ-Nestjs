@@ -29,5 +29,9 @@ export class ChatController {
     return this.chatService.getChatRoomById(roomId);
   }
 
- 
+  @Post('rooms/:roomId/participants')
+  async addParticipantToRoom(@Param('roomId') roomId: string, @Body('userId') userId: string) {
+    return this.chatService.addParticipantToRoom(roomId, userId);
+  }
+
 }
