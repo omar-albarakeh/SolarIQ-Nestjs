@@ -51,7 +51,21 @@ export class ItemService {
   }
 
 
-
+  async updateItem(id: string, updateItemDto: UpdateItemDto): Promise<Item> {
+    try {
+      const updatedItem = await this.itemRepository.update(id, updateItemDto);
+      if (!updatedItem) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      return updatedItem;
+    } catch (error) {
+      this.logger.error(`Failed to update item: ${error.message}`, error.stack);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to update item');
+    }
+  }
 
  
 }
