@@ -16,5 +16,20 @@ export class CommunityPostRepository {
     private readonly commentModel: Model<Comment>,
   ) {}
 
+  async createPost(createPostDto: CreatePostDto, authorId: Types.ObjectId): Promise<CommunityPost> {
+    const newPost = new this.postModel({
+      text: createPostDto.text,
+      author: authorId,
+    });
+    return await newPost.save();
+  }
+
+  
+
+
+
+
+
+  
 
 }
