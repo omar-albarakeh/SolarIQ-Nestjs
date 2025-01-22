@@ -27,6 +27,10 @@ export class ChatService {
     return this.userConnectionRepository.connectUser(userId, socketId);
   }
 
+  async disconnectUser(userId: string) {
+    return this.userConnectionRepository.disconnectUser(userId);
+  }
+
  
   
   
