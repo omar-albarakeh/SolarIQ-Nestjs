@@ -34,6 +34,24 @@ export class ItemService {
   }
 
 
+  async getItemById(id: string): Promise<Item> {
+    try {
+      const item = await this.itemRepository.findOne(id);
+      if (!item) {
+        throw new NotFoundException(`Item with ID ${id} not found`);
+      }
+      return item;
+    } catch (error) {
+      this.logger.error(`Failed to fetch item: ${error.message}`, error.stack);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Invalid item ID');
+    }
+  }
+
+
+
 
  
 }
