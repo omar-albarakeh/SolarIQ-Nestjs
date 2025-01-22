@@ -24,6 +24,7 @@ export class CommunityPostRepository {
     return await newPost.save();
   }
 
+
   async getPosts(): Promise<CommunityPost[]> {
     return await this.postModel
       .find()
@@ -40,38 +41,39 @@ export class CommunityPostRepository {
     return await this.postModel.findById(postId).exec();
   }
 
- async addComment(addCommentDto: AddCommentDto, authorId: Types.ObjectId): Promise<Comment> {
-  const newComment = new this.commentModel({
-    text: addCommentDto.text,
-    post: addCommentDto.postId,
-    author: authorId,
-  });
-  await newComment.save();
 
-  await this.postModel.findByIdAndUpdate(
-    addCommentDto.postId,
-    { $push: { comments: newComment._id } },
-    { new: true },
-  );
+  async addComment(addCommentDto: AddCommentDto, authorId: Types.ObjectId): Promise<Comment> {
+    const newComment = new this.commentModel({
+      text: addCommentDto.text,
+      post: addCommentDto.postId,
+      author: authorId,
+    });
+    await newComment.save();
 
-  const populatedComment = await this.commentModel
-    .findById(newComment._id)
-    .populate('author', 'username')
-    .exec();
+    await this.postModel.findByIdAndUpdate(
+      addCommentDto.postId,
+      { $push: { comments: newComment._id } },
+      { new: true },
+    );
 
-  if (!populatedComment) {
-    throw new NotFoundException('Comment not found after creation');
+    const populatedComment = await this.commentModel
+      .findById(newComment._id)
+      .populate('author', 'username')
+      .exec();
+
+    if (!populatedComment) {
+      throw new NotFoundException('Comment not found after creation');
+    }
+
+    return populatedComment;
   }
 
-  return populatedComment;
-}
-
   async getCommentsByPost(postId: Types.ObjectId): Promise<Comment[]> {
-  return await this.commentModel
-    .find({ post: postId })
-    .populate('author', 'username')
-    .exec();
-}
+    return await this.commentModel
+      .find({ post: postId })
+      .populate('author', 'username')
+      .exec();
+  }
 
   async likePost(likePostDto: LikePostDto, userId: Types.ObjectId): Promise<CommunityPost> {
     const updatedPost = await this.postModel.findByIdAndUpdate(
